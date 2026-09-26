@@ -17,10 +17,14 @@ var previously_grounded : bool = true
 var coyote_time : float = 0.0
 var effective_gravity
 var selected_light = 0
+var light_number = 0
 
 var selector_open : bool = false
 
 func _process(delta: float) -> void:
+	if Input.is_action_just_pressed("reset"):
+		reset_level()
+	
 	if Input.is_action_pressed("light_selector"):
 		Engine.time_scale = lerpf(Engine.time_scale, COLOR_WHEEL_TIMESCALE, TIMESCALE_WEIGHT)
 		selector_open = true
@@ -43,6 +47,13 @@ func _physics_process(delta: float) -> void:
 		coyote_time = COYOTE_AMOUNT
 	
 	if selector_open:
+		if Input.is_action_just_pressed("left"):
+			selected_light -= 1
+		elif Input.is_action_just_pressed("right"):
+			selected_light += 1
+		
+		selected_light = clamp(selected_light, 0, light_number - 1)
+		
 		previously_grounded = is_on_floor()
 		move_and_slide()
 		return
@@ -69,3 +80,6 @@ func _physics_process(delta: float) -> void:
 	previously_grounded = is_on_floor()
 	
 	move_and_slide()
+
+func reset_level() -> void:
+	get_tree().reload_current_scene()

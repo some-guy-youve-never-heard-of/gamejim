@@ -57,6 +57,25 @@ shape = SubResource("CircleShape2D_gj0iy")
 [node name="move_path" type="Node" parent="Lights (Lights MUST be children of this node)/PointLight2D" unique_id=214791749]
 script = ExtResource("4_ert0c")
 
+[node name="PointLight2D2" type="PointLight2D" parent="Lights (Lights MUST be children of this node)" unique_id=429263352]
+visibility_layer = 12
+position = Vector2(1183, 425.00003)
+scale = Vector2(2.78, 2.78)
+color = Color(1, 0, 0, 1)
+energy = 0.75
+texture = ExtResource("3_6epvh")
+script = ExtResource("3_tvne3")
+spotlight_id = 1
+
+[node name="Area2D" type="Area2D" parent="Lights (Lights MUST be children of this node)/PointLight2D2" unique_id=14412753]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lights (Lights MUST be children of this node)/PointLight2D2/Area2D" unique_id=160913179]
+shape = SubResource("CircleShape2D_gj0iy")
+
+[node name="move_path" type="Node" parent="Lights (Lights MUST be children of this node)/PointLight2D2" unique_id=1672671140]
+script = ExtResource("4_ert0c")
+
 [node name="Backdrop" type="Sprite2D" parent="." unique_id=1599508583]
 visibility_layer = 4
 z_index = -1
@@ -92,3 +111,4 @@ shape = SubResource("RectangleShape2D_gj0iy")
 texture = ExtResource("6_08cxd")
 
 [connection signal="body_exited" from="Lights (Lights MUST be children of this node)/PointLight2D/Area2D" to="Lights (Lights MUST be children of this node)/PointLight2D" method="_on_area_2d_body_exited"]
+[connection signal="body_exited" from="Lights (Lights MUST be children of this node)/PointLight2D2/Area2D" to="Lights (Lights MUST be children of this node)/PointLight2D2" method="_on_area_2d_body_exited"]

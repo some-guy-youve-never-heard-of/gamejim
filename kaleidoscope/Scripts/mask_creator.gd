@@ -12,6 +12,7 @@ func _ready() -> void:
 	# collect every spotlight in the stage
 	real_lights = light_parent.get_children()
 	
+	
 	# instantiate a bunch of lights copying the spotlights placed in the level
 	
 	for l in real_lights:
@@ -29,4 +30,5 @@ func _ready() -> void:
 func _physics_process(_delta: float) -> void:
 	for l in real_lights:
 		var i : int = real_lights.find(l)
+		copy_lights[i].visible = real_lights[i].visible
 		copy_lights[i].transform = real_lights[i].transform

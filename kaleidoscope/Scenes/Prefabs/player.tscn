@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c3fk13cy0pfj" path="res://Scripts/player.gd" id="1_sfbl0"]
 [ext_resource type="Texture2D" uid="uid://bvelereiwee5d" path="res://icon.svg" id="2_pv3ct"]
+[ext_resource type="Script" uid="uid://bga3ce6h7kar" path="res://Scripts/light_selector.gd" id="2_v1l4e"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_gj0iy"]
 size = Vector3(50, 100, 1)
@@ -17,11 +18,8 @@ floor_snap_length = 5.0
 script = ExtResource("1_sfbl0")
 COYOTE_AMOUNT = 1.0
 
-[node name="HUD" type="Control" parent="." unique_id=2071866867]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="SelectorUI" type="Node2D" parent="." unique_id=1354101435]
+script = ExtResource("2_v1l4e")
 
 [node name="MeshInstance2D" type="MeshInstance2D" parent="." unique_id=34811259]
 mesh = SubResource("BoxMesh_gj0iy")
@@ -29,3 +27,7 @@ texture = ExtResource("2_pv3ct")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1111887194]
 shape = SubResource("RectangleShape2D_dsagv")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=506063843]
+process_mode = 4
+visible = false
