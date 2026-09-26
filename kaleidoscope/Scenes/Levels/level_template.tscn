@@ -6,21 +6,17 @@
 [ext_resource type="Texture2D" uid="uid://clly45f8h1ace" path="res://light.webp" id="3_6epvh"]
 [ext_resource type="Script" uid="uid://bedyxdm4o4ev3" path="res://Scripts/spotlight.gd" id="3_tvne3"]
 [ext_resource type="Texture2D" uid="uid://ypsq4g51sv7b" path="res://paper_backdrop.jpg" id="4_aibml"]
-[ext_resource type="Shader" uid="uid://ydge08bancli" path="res://Scripts/hidden_object.gdshader" id="5_ebu0d"]
+[ext_resource type="Script" uid="uid://b8ncec28cnmxy" path="res://Scripts/move_path.gd" id="4_ert0c"]
 [ext_resource type="Script" uid="uid://b6o8qde1wt35g" path="res://Scripts/colored_object.gd" id="6_6epvh"]
+[ext_resource type="Texture2D" uid="uid://gckh6nphwdag" path="res://hidden.png" id="6_08cxd"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_dsagv"]
 size = Vector3(1920, 1080, 1)
 
-[sub_resource type="BoxMesh" id="BoxMesh_gj0iy"]
-size = Vector3(500, 100, 1)
+[sub_resource type="CircleShape2D" id="CircleShape2D_gj0iy"]
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_6epvh"]
-load_path = "res://.godot/imported/hidden.png-f9e9a9d6dfa32f53485c18b13fd8ecea.ctex"
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_6epvh"]
-shader = ExtResource("5_ebu0d")
-shader_parameter/light_color = Vector3(1, 0, 0)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gj0iy"]
+size = Vector2(260, 260)
 
 [node name="Level Template" type="Node2D" unique_id=1614463858]
 
@@ -39,18 +35,27 @@ mesh = SubResource("BoxMesh_dsagv")
 script = ExtResource("1_6epvh")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=1416531392]
-color = Color(0.10524041, 0.10524041, 0.1052404, 1)
+color = Color(0.15199637, 0.15199634, 0.15199634, 1)
 
 [node name="Lights (Lights MUST be children of this node)" type="Node" parent="." unique_id=362407415]
 
 [node name="PointLight2D" type="PointLight2D" parent="Lights (Lights MUST be children of this node)" unique_id=688721680]
 visibility_layer = 12
-position = Vector2(847, 616)
+position = Vector2(776.00006, 420)
 scale = Vector2(2.78, 2.78)
 color = Color(0, 0, 1, 1)
 energy = 0.75
 texture = ExtResource("3_6epvh")
 script = ExtResource("3_tvne3")
+
+[node name="Area2D" type="Area2D" parent="Lights (Lights MUST be children of this node)/PointLight2D" unique_id=2098279939]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lights (Lights MUST be children of this node)/PointLight2D/Area2D" unique_id=1909928195]
+shape = SubResource("CircleShape2D_gj0iy")
+
+[node name="move_path" type="Node" parent="Lights (Lights MUST be children of this node)/PointLight2D" unique_id=214791749]
+script = ExtResource("4_ert0c")
 
 [node name="Backdrop" type="Sprite2D" parent="." unique_id=1599508583]
 visibility_layer = 4
@@ -72,14 +77,18 @@ position = Vector2(462, 600)
 collision_mask = 2
 COYOTE_AMOUNT = 0.2
 
-[node name="MeshInstance2D" type="MeshInstance2D" parent="." unique_id=283497068]
-visibility_layer = 2
-position = Vector2(1223, 753)
-mesh = SubResource("BoxMesh_gj0iy")
-texture = SubResource("CompressedTexture2D_6epvh")
+[node name="ColoredPlatform" type="StaticBody2D" parent="." unique_id=1565773338 node_paths=PackedStringArray("canvas")]
+position = Vector2(933, 737.00006)
+scale = Vector2(0.556, 0.556)
+collision_layer = 2
 script = ExtResource("6_6epvh")
 color = Color(0, 0, 1, 1)
+canvas = NodePath("Sprite2D")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1207548856]
-material = SubResource("ShaderMaterial_6epvh")
-position = Vector2(960, 540)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ColoredPlatform" unique_id=1031163131]
+shape = SubResource("RectangleShape2D_gj0iy")
+
+[node name="Sprite2D" type="Sprite2D" parent="ColoredPlatform" unique_id=1166464723]
+texture = ExtResource("6_08cxd")
+
+[connection signal="body_exited" from="Lights (Lights MUST be children of this node)/PointLight2D/Area2D" to="Lights (Lights MUST be children of this node)/PointLight2D" method="_on_area_2d_body_exited"]

@@ -12,10 +12,7 @@ func _ready() -> void:
 	# collect every spotlight in the stage
 	real_lights = light_parent.get_children()
 	
-	# instantiate a bunch of lights and other important shit
-	#modulate = CanvasModulate.new()
-	#add_child(modulate)
-	#modulate.color = real_modulate.color
+	# instantiate a bunch of lights copying the spotlights placed in the level
 	
 	for l in real_lights:
 		var i : int = real_lights.find(l)

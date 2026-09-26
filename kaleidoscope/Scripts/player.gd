@@ -10,9 +10,23 @@ extends CharacterBody2D
 @export var GRAVITY : float = 1960.0
 @export var falling_gravity_mult : float = 2
 
+const COLOR_WHEEL_TIMESCALE : float = 0.2
+const TIMESCALE_WEIGHT : float = 0.1
+
 var previously_grounded : bool = true
 var coyote_time : float = 0.0
 var effective_gravity
+var selected_light = 0
+
+var selector_open : bool = false
+
+func _process(delta: float) -> void:
+	if Input.is_action_pressed("light_selector"):
+		Engine.time_scale = lerpf(Engine.time_scale, COLOR_WHEEL_TIMESCALE, TIMESCALE_WEIGHT)
+		selector_open = true
+	else:
+		Engine.time_scale = lerpf(Engine.time_scale, 1.0, TIMESCALE_WEIGHT)
+		selector_open = false
 
 func _physics_process(delta: float) -> void:
 	# increase gravity if falling
@@ -27,7 +41,12 @@ func _physics_process(delta: float) -> void:
 		coyote_time = clampf(coyote_time - delta,0,COYOTE_AMOUNT)
 	else:
 		coyote_time = COYOTE_AMOUNT
-
+	
+	if selector_open:
+		previously_grounded = is_on_floor()
+		move_and_slide()
+		return
+	
 	# Handle jump.
 	if Input.is_action_just_pressed("jump") && (is_on_floor() || coyote_time > 0):
 		velocity.y = JUMP_VELOCITY
