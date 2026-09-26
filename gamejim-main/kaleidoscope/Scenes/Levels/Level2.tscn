@@ -1,0 +1,101 @@
+[gd_scene format=4 uid="uid://dc0374w7aiso4"]
+
+[ext_resource type="Script" uid="uid://bo0te1xtwyb6e" path="res://Scripts/mask_creator.gd" id="1_6epvh"]
+[ext_resource type="TileSet" uid="uid://bnp58bpmbw4fy" path="res://drawntiles.tres" id="1_yhrl8"]
+[ext_resource type="PackedScene" uid="uid://d21n4kgk4quu" path="res://Scenes/Prefabs/player.tscn" id="2_ebu0d"]
+[ext_resource type="Texture2D" uid="uid://clly45f8h1ace" path="res://light.webp" id="3_6epvh"]
+[ext_resource type="Script" uid="uid://bedyxdm4o4ev3" path="res://Scripts/spotlight.gd" id="3_tvne3"]
+[ext_resource type="Texture2D" uid="uid://ypsq4g51sv7b" path="res://paper_backdrop.jpg" id="4_aibml"]
+[ext_resource type="Script" uid="uid://b8ncec28cnmxy" path="res://Scripts/move_path.gd" id="4_ert0c"]
+[ext_resource type="Script" uid="uid://b6o8qde1wt35g" path="res://Scripts/colored_object.gd" id="6_6epvh"]
+[ext_resource type="Texture2D" uid="uid://gckh6nphwdag" path="res://hidden.png" id="6_08cxd"]
+[ext_resource type="PackedScene" uid="uid://c28caa1m3p4v" path="res://Scenes/Prefabs/PressurePlate.tscn" id="10_08cxd"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_lv2"]
+size = Vector3(1920, 1080, 1)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lv2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_platform"]
+size = Vector2(260, 260)
+
+[node name="Level3" type="Node2D" unique_id=388602360]
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=2005255078]
+size = Vector2i(1920, 1080)
+render_target_update_mode = 4
+
+[node name="CanvasModulate" type="CanvasModulate" parent="SubViewport" unique_id=1528625388]
+color = Color(0, 0, 0, 1)
+
+[node name="Blackdrop" type="MeshInstance2D" parent="SubViewport" unique_id=1887725156]
+position = Vector2(960, 540)
+mesh = SubResource("BoxMesh_lv2")
+
+[node name="MaskCreator (IGNORE ITS IMPORTANT)" type="Node" parent="SubViewport" unique_id=2142487984]
+script = ExtResource("1_6epvh")
+
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=63467964]
+color = Color(0.15199637, 0.15199634, 0.15199634, 1)
+
+[node name="Lights (Lights MUST be children of this node)" type="Node" parent="." unique_id=472710270]
+
+[node name="RedLight" type="PointLight2D" parent="Lights (Lights MUST be children of this node)" unique_id=1073044700]
+visibility_layer = 12
+position = Vector2(548, 561)
+scale = Vector2(2.78, 2.78)
+color = Color(1, 0, 0, 1)
+energy = 0.75
+texture = ExtResource("3_6epvh")
+script = ExtResource("3_tvne3")
+
+[node name="Area2D" type="Area2D" parent="Lights (Lights MUST be children of this node)/RedLight" unique_id=1082642693]
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lights (Lights MUST be children of this node)/RedLight/Area2D" unique_id=1116419268]
+shape = SubResource("CircleShape2D_lv2")
+
+[node name="move_path" type="Node" parent="Lights (Lights MUST be children of this node)/RedLight" unique_id=1854161191]
+script = ExtResource("4_ert0c")
+
+[node name="Backdrop" type="Sprite2D" parent="." unique_id=377669953]
+visibility_layer = 4
+z_index = -1
+position = Vector2(960, 540)
+rotation = 1.5707964
+scale = Vector2(2.28, 2.96)
+texture = ExtResource("4_aibml")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=42944603]
+visibility_layer = 2
+position = Vector2(232, 492)
+scale = Vector2(0.25, 0.25)
+tile_map_data = PackedByteArray("AAABAAMAAAABAAAAAAACAAMAAAABAAAAAAADAAMAAAABAAAAAAAEAAMAAAABAAAAAAAFAAMAAAABAAAAAAAGAAMAAAACAAAAAAAAAAMAAAAAAAAAAAAAAAQAAAAAAAIAAAABAAQAAAABAAIAAAACAAQAAAABAAIAAAADAAQAAAABAAIAAAAEAAQAAAABAAIAAAAFAAQAAAABAAIAAAAGAAQAAAACAAIAAAA=")
+tile_set = ExtResource("1_yhrl8")
+
+[node name="Player" parent="." unique_id=984829979 instance=ExtResource("2_ebu0d")]
+position = Vector2(462, 600)
+collision_mask = 2
+COYOTE_AMOUNT = 0.2
+
+[node name="RedPlatform" type="StaticBody2D" parent="." unique_id=953979740 node_paths=PackedStringArray("canvas")]
+position = Vector2(1606.0001, 667)
+scale = Vector2(0.556, 0.556)
+collision_layer = 2
+script = ExtResource("6_6epvh")
+color = Color(1, 0, 0, 1)
+canvas = NodePath("Sprite2D")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RedPlatform" unique_id=122752113]
+shape = SubResource("RectangleShape2D_platform")
+
+[node name="Sprite2D" type="Sprite2D" parent="RedPlatform" unique_id=1184076374]
+texture = ExtResource("6_08cxd")
+
+[node name="LightDestination" type="Marker2D" parent="." unique_id=379204147]
+position = Vector2(1608, 669)
+
+[node name="PressurePlate" parent="." unique_id=1281211030 node_paths=PackedStringArray("target_light", "target_position_node") instance=ExtResource("10_08cxd")]
+position = Vector2(592, 672)
+target_light = NodePath("../Lights (Lights MUST be children of this node)/RedLight")
+target_position_node = NodePath("../LightDestination")
