@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://d21n4kgk4quu"]
+
+[ext_resource type="Script" uid="uid://c3fk13cy0pfj" path="res://Scripts/player.gd" id="1_sfbl0"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_gj0iy"]
+size = Vector3(50, 100, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dsagv"]
+size = Vector2(50, 100)
+
+[node name="Player" type="CharacterBody2D" unique_id=19959497]
+physics_interpolation_mode = 1
+collision_mask = 14
+floor_max_angle = 0.6981317
+floor_snap_length = 5.0
+script = ExtResource("1_sfbl0")
+COYOTE_AMOUNT = 1.0
+
+[node name="HUD" type="Control" parent="." unique_id=2071866867]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="." unique_id=34811259]
+mesh = SubResource("BoxMesh_gj0iy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1111887194]
+shape = SubResource("RectangleShape2D_dsagv")

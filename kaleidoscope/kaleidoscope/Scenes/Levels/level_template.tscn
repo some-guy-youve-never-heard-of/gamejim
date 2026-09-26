@@ -1,0 +1,119 @@
+[gd_scene format=4 uid="uid://dwnjf5cgg16oj"]
+
+[ext_resource type="Script" uid="uid://bo0te1xtwyb6e" path="res://Scripts/mask_creator.gd" id="1_6epvh"]
+[ext_resource type="TileSet" uid="uid://bnp58bpmbw4fy" path="res://drawntiles.tres" id="1_yhrl8"]
+[ext_resource type="PackedScene" uid="uid://d21n4kgk4quu" path="res://Scenes/Prefabs/player.tscn" id="2_ebu0d"]
+[ext_resource type="Texture2D" uid="uid://clly45f8h1ace" path="res://light.webp" id="3_6epvh"]
+[ext_resource type="Script" uid="uid://bedyxdm4o4ev3" path="res://Scripts/spotlight.gd" id="3_tvne3"]
+[ext_resource type="Texture2D" uid="uid://ypsq4g51sv7b" path="res://paper_backdrop.jpg" id="4_aibml"]
+[ext_resource type="Script" uid="uid://b8ncec28cnmxy" path="res://Scripts/move_path.gd" id="4_ert0c"]
+[ext_resource type="Script" uid="uid://b6o8qde1wt35g" path="res://Scripts/colored_object.gd" id="6_6epvh"]
+[ext_resource type="Texture2D" uid="uid://gckh6nphwdag" path="res://hidden.png" id="6_08cxd"]
+[ext_resource type="PackedScene" uid="uid://c28caa1m3p4v" path="res://Scenes/Prefabs/PressurePlate.tscn" id="10_08cxd"]
+[ext_resource type="PackedScene" uid="uid://df234ab1c5d" path="res://Scenes/Prefabs/PushBox.tscn" id="11_pushbox"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_dsagv"]
+size = Vector3(1920, 1080, 1)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gj0iy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gj0iy"]
+size = Vector2(260, 260)
+
+[node name="Level Template" type="Node2D" unique_id=1614463858]
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=349301763]
+size = Vector2i(1920, 1080)
+render_target_update_mode = 4
+
+[node name="CanvasModulate" type="CanvasModulate" parent="SubViewport" unique_id=2068176369]
+color = Color(0, 0, 0, 1)
+
+[node name="Blackdrop" type="MeshInstance2D" parent="SubViewport" unique_id=200322007]
+position = Vector2(960, 540)
+mesh = SubResource("BoxMesh_dsagv")
+
+[node name="MaskCreator (IGNORE ITS IMPORTANT)" type="Node" parent="SubViewport" unique_id=1217511486]
+script = ExtResource("1_6epvh")
+
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=1416531392]
+color = Color(0.15199637, 0.15199634, 0.15199634, 1)
+
+[node name="Lights (Lights MUST be children of this node)" type="Node" parent="." unique_id=362407415]
+
+[node name="PointLight2D" type="PointLight2D" parent="Lights (Lights MUST be children of this node)" unique_id=688721680]
+visibility_layer = 12
+position = Vector2(1049, 620)
+scale = Vector2(2.78, 2.78)
+enabled = false
+color = Color(0, 0, 1, 1)
+energy = 0.75
+texture = ExtResource("3_6epvh")
+script = ExtResource("3_tvne3")
+
+[node name="Area2D" type="Area2D" parent="Lights (Lights MUST be children of this node)/PointLight2D" unique_id=2098279939]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lights (Lights MUST be children of this node)/PointLight2D/Area2D" unique_id=1909928195]
+shape = SubResource("CircleShape2D_gj0iy")
+
+[node name="move_path" type="Node" parent="Lights (Lights MUST be children of this node)/PointLight2D" unique_id=214791749]
+script = ExtResource("4_ert0c")
+
+[node name="Backdrop" type="Sprite2D" parent="." unique_id=1599508583]
+visibility_layer = 4
+z_index = -1
+position = Vector2(960, 540)
+rotation = 1.5707964
+scale = Vector2(2.28, 2.96)
+texture = ExtResource("4_aibml")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=654518336]
+visibility_layer = 2
+position = Vector2(232, 492)
+scale = Vector2(0.25, 0.25)
+tile_map_data = PackedByteArray("AAABAAMAAAABAAAAAAACAAMAAAABAAAAAAADAAMAAAABAAAAAAAEAAMAAAABAAAAAAAFAAMAAAABAAAAAAAGAAMAAAACAAAAAAAAAAMAAAAAAAAAAAAAAAQAAAAAAAIAAAABAAQAAAABAAIAAAACAAQAAAABAAIAAAADAAQAAAABAAIAAAAEAAQAAAABAAIAAAAFAAQAAAABAAIAAAAGAAQAAAACAAIAAAA=")
+tile_set = ExtResource("1_yhrl8")
+
+[node name="Player" parent="." unique_id=19959497 instance=ExtResource("2_ebu0d")]
+position = Vector2(462, 600)
+collision_mask = 2
+COYOTE_AMOUNT = 0.2
+
+[node name="ColoredPlatform" type="StaticBody2D" parent="." unique_id=1565773338 node_paths=PackedStringArray("canvas")]
+position = Vector2(933, 737.00006)
+scale = Vector2(0.556, 0.556)
+collision_layer = 2
+script = ExtResource("6_6epvh")
+color = Color(0, 0, 1, 1)
+canvas = NodePath("Sprite2D")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ColoredPlatform" unique_id=1031163131]
+shape = SubResource("RectangleShape2D_gj0iy")
+
+[node name="Sprite2D" type="Sprite2D" parent="ColoredPlatform" unique_id=1166464723]
+texture = ExtResource("6_08cxd")
+
+[node name="ColoredPlatform2" type="StaticBody2D" parent="." unique_id=1407271461 node_paths=PackedStringArray("canvas")]
+position = Vector2(1148.0001, 656)
+scale = Vector2(0.556, 0.556)
+collision_layer = 2
+script = ExtResource("6_6epvh")
+color = Color(0, 0, 1, 1)
+canvas = NodePath("Sprite2D")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ColoredPlatform2" unique_id=902717650]
+shape = SubResource("RectangleShape2D_gj0iy")
+
+[node name="Sprite2D" type="Sprite2D" parent="ColoredPlatform2" unique_id=1808959473]
+texture = ExtResource("6_08cxd")
+
+[node name="PressurePlate" parent="." unique_id=909216649 node_paths=PackedStringArray("target") instance=ExtResource("10_08cxd")]
+position = Vector2(331, 688)
+target = NodePath("../Lights (Lights MUST be children of this node)/PointLight2D")
+color = Color(0, 0, 1, 1)
+
+[node name="PushBox" parent="." unique_id=1260832551 instance=ExtResource("11_pushbox")]
+position = Vector2(618, 652)
+
+[connection signal="body_exited" from="Lights (Lights MUST be children of this node)/PointLight2D/Area2D" to="Lights (Lights MUST be children of this node)/PointLight2D" method="_on_area_2d_body_exited"]
