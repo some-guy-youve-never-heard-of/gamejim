@@ -1,0 +1,85 @@
+[gd_scene format=4 uid="uid://dwnjf5cgg16oj"]
+
+[ext_resource type="Script" uid="uid://bo0te1xtwyb6e" path="res://Scripts/mask_creator.gd" id="1_6epvh"]
+[ext_resource type="TileSet" uid="uid://bnp58bpmbw4fy" path="res://drawntiles.tres" id="1_yhrl8"]
+[ext_resource type="PackedScene" uid="uid://d21n4kgk4quu" path="res://Scenes/Prefabs/player.tscn" id="2_ebu0d"]
+[ext_resource type="Texture2D" uid="uid://clly45f8h1ace" path="res://light.webp" id="3_6epvh"]
+[ext_resource type="Script" uid="uid://bedyxdm4o4ev3" path="res://Scripts/spotlight.gd" id="3_tvne3"]
+[ext_resource type="Texture2D" uid="uid://ypsq4g51sv7b" path="res://paper_backdrop.jpg" id="4_aibml"]
+[ext_resource type="Shader" uid="uid://ydge08bancli" path="res://Scripts/hidden_object.gdshader" id="5_ebu0d"]
+[ext_resource type="Script" uid="uid://b6o8qde1wt35g" path="res://Scripts/colored_object.gd" id="6_6epvh"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_dsagv"]
+size = Vector3(1920, 1080, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_gj0iy"]
+size = Vector3(500, 100, 1)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_6epvh"]
+load_path = "res://.godot/imported/hidden.png-f9e9a9d6dfa32f53485c18b13fd8ecea.ctex"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6epvh"]
+shader = ExtResource("5_ebu0d")
+shader_parameter/light_color = Vector3(1, 0, 0)
+
+[node name="Level Template" type="Node2D" unique_id=1614463858]
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=349301763]
+size = Vector2i(1920, 1080)
+render_target_update_mode = 4
+
+[node name="CanvasModulate" type="CanvasModulate" parent="SubViewport" unique_id=2068176369]
+color = Color(0, 0, 0, 1)
+
+[node name="Blackdrop" type="MeshInstance2D" parent="SubViewport" unique_id=200322007]
+position = Vector2(960, 540)
+mesh = SubResource("BoxMesh_dsagv")
+
+[node name="MaskCreator (IGNORE ITS IMPORTANT)" type="Node" parent="SubViewport" unique_id=1217511486]
+script = ExtResource("1_6epvh")
+
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=1416531392]
+color = Color(0.10524041, 0.10524041, 0.1052404, 1)
+
+[node name="Lights (Lights MUST be children of this node)" type="Node" parent="." unique_id=362407415]
+
+[node name="PointLight2D" type="PointLight2D" parent="Lights (Lights MUST be children of this node)" unique_id=688721680]
+visibility_layer = 12
+position = Vector2(847, 616)
+scale = Vector2(2.78, 2.78)
+color = Color(0, 0, 1, 1)
+energy = 0.75
+texture = ExtResource("3_6epvh")
+script = ExtResource("3_tvne3")
+
+[node name="Backdrop" type="Sprite2D" parent="." unique_id=1599508583]
+visibility_layer = 4
+z_index = -1
+position = Vector2(960, 540)
+rotation = 1.5707964
+scale = Vector2(2.28, 2.96)
+texture = ExtResource("4_aibml")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=654518336]
+visibility_layer = 2
+position = Vector2(232, 492)
+scale = Vector2(0.25, 0.25)
+tile_map_data = PackedByteArray("AAABAAMAAAABAAAAAAACAAMAAAABAAAAAAADAAMAAAABAAAAAAAEAAMAAAABAAAAAAAFAAMAAAABAAAAAAAGAAMAAAACAAAAAAAAAAMAAAAAAAAAAAAAAAQAAAAAAAIAAAABAAQAAAABAAIAAAACAAQAAAABAAIAAAADAAQAAAABAAIAAAAEAAQAAAABAAIAAAAFAAQAAAABAAIAAAAGAAQAAAACAAIAAAA=")
+tile_set = ExtResource("1_yhrl8")
+
+[node name="Player" parent="." unique_id=19959497 instance=ExtResource("2_ebu0d")]
+position = Vector2(462, 600)
+collision_mask = 2
+COYOTE_AMOUNT = 0.2
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="." unique_id=283497068]
+visibility_layer = 2
+position = Vector2(1223, 753)
+mesh = SubResource("BoxMesh_gj0iy")
+texture = SubResource("CompressedTexture2D_6epvh")
+script = ExtResource("6_6epvh")
+color = Color(0, 0, 1, 1)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1207548856]
+material = SubResource("ShaderMaterial_6epvh")
+position = Vector2(960, 540)
